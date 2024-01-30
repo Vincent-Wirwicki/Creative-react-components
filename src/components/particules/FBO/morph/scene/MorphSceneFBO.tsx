@@ -1,10 +1,10 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import MorphParticulesFBO from "../particules/MorphParticulesFBO";
+// import MorphParticulesFBO from "../particules/MorphParticulesFBO";
 const MorphSceneFBO = () => {
   return (
     <Canvas>
-      <MorphParticulesFBO />
+      {/* <MorphParticulesFBO /> */}
       <OrbitControls />
     </Canvas>
   );
