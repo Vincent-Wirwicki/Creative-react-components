@@ -37,10 +37,7 @@ const LettersTranslate3d: React.FC<Props> = ({
       ))}
     </div>
   );
-  useEffect(() => {
-    
-  }, []);
-  console.log(wrapRef.current?.children[0].getBoundingClientRect().height);
+  useEffect(() => {}, []);
 
   return (
     <div className={wrap} ref={wrapRef}>
