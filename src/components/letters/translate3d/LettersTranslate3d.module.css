@@ -1,0 +1,46 @@
+.wrap {
+    height: 42px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    text-transform: uppercase;
+    user-select: none;
+    padding: 0.5rem;
+    /* font-size: 3.75rem; */
+}
+
+/* .wrap:hover {
+    border-color: #fef08a;
+    color: #fef08a
+} */
+
+.span__letter {
+    will-change: transform;
+    display: inline-block;
+    transform-style: preserve-3d;
+    transition: transform;
+}
+
+.wrap:hover>div:nth-child(1) .span__letter {
+    transform: translate3d(0, -25%, 0) rotateX(-90deg);
+}
+
+.wrap>div:nth-child(2) .span__letter {
+    transform: translate3d(0, -75%, 0) rotateX(-90deg);
+}
+
+.wrap:hover>div:nth-child(2) .span__letter {
+    transform: translate3d(0, -100%, 0) rotateX(0deg);
+}
+
+@keyframes letterIn {
+    from {}
+
+    to {}
+}
+
+@keyframes letterOut {
+    from {}
+
+    to {}
+}

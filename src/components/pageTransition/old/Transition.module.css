@@ -1,0 +1,9 @@
+.slide {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: #737155;
+    pointer-events: none;
+}

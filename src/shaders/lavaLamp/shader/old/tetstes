@@ -1,0 +1,35 @@
+// const data = useMemo<LavaLampShaderMaterialProps>(
+//   () => ({
+//     uniforms: {
+//       uTime: { value: 0 },
+//       uColors: { value: colors.map(color => new Color(color)) },
+//     },
+//     lavaLampVertex,
+//     lavaLampfragement,
+//   }),
+//   [colors]
+// );
+// type LavaLampShaderMaterialProps = {
+//   uniforms: {
+//     uTime: { value: number };
+//     uColors: { value: THREE.Color[] };
+//   };
+//   lavaLampVertex: string;
+//   lavaLampfragement: string;
+// };
+// useEffect(() => {
+//   if (ref.current)
+//     ref.current.uColors = colors.map(color => new Color(color));
+// }, [colors]);
+// useMemo(() => {
+//   if (ref.current)
+//     ref.current.uColors.value = colors.map(color => new Color(color));
+// }, [colors]);
+//  <shaderMaterial
+//    attach="material"
+//    uniforms={data.uniforms}
+//    vertexShader={data.lavaLampVertex}
+//    fragmentShader={data.lavaLampfragement}
+//    needsUpdate={true}
+//    ref={ref}
+//  />;
