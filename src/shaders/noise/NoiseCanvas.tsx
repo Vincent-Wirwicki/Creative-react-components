@@ -1,30 +1,30 @@
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { EffectComposer, Noise } from "@react-three/postprocessing";
-import { useControls } from "leva";
-import { Color } from "three";
+// import { useControls } from "leva";
+// import { Color } from "three";useMemo
 import NoiseMesh from "./NoiseMesh";
 
 const NoiseCanvas = () => {
-  const options = useMemo(() => {
-    return {
-      colorA: "#ff0000",
-      colorB: "#000000",
-      colorC: "#000000",
-    };
-  }, []);
+  // const options = useMemo(() => {
+  //   return {
+  //     colorA: "#ff0000",
+  //     colorB: "#000000",
+  //     colorC: "#000000",
+  //   };
+  // }, []);
 
-  const { colorA, colorB, colorC } = useControls(options);
+  // const { colorA, colorB, colorC } = useControls(options);        {/* <NoiseMesh
+  //   uColorA={new Color(colorA)}
+  //   uColorB={new Color(colorB)}
+  //   uColorC={new Color(colorC)}
+  // /> */}
 
   return (
     <Canvas camera={{ position: [0.774, -0.601, -0.1] }}>
       <Suspense fallback={null}>
-        <NoiseMesh
-          uColorA={new Color(colorA)}
-          uColorB={new Color(colorB)}
-          uColorC={new Color(colorC)}
-        />
+        <NoiseMesh />
       </Suspense>
       <EffectComposer>
         <Noise opacity={0.05} />

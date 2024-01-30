@@ -1,30 +1,50 @@
-import * as THREE from "three";
-import { useRef } from "react";
-import { NoiseShaderMaterial } from "./NoiseShaderMaterial";
-import { extend, Object3DNode, useFrame } from "@react-three/fiber";
+// import * as THREE from "three";
+import { useRef, useMemo } from "react";
+// import { NoiseShaderMaterial } from "./NoiseShaderMaterial";
+import { useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
-// import { LayerMaterial, Fresnel, Noise } from "lamina";
+import { Color, ShaderMaterial } from "three";
+import { noisyFragment } from "./shader/noisyFragment";
+import { noisyVertex } from "./shader/noisyVertex";
+// import NoisyMaterial from "./shader/NoisyMaterial";
 
-declare module "@react-three/fiber" {
-  interface ThreeElements {
-    noiseShaderMaterial: Object3DNode<
-      NoiseShaderMaterial,
-      typeof NoiseShaderMaterial
-    >;
-  }
-}
+// import { LayerMaterial, Fresnel, Noise } from "lamina"; Object3DNode
 
-extend({ NoiseShaderMaterial });
+// declare module "@react-three/fiber" {
+//   interface ThreeElements {
+//     noisyMaterial: Object3DNode<NoisyMaterial, typeof NoisyMaterial>;
+//   }
+// }
 
-interface Props {
-  uColorA: THREE.Color;
-  uColorB: THREE.Color;
-  uColorC: THREE.Color;
-}
+// extend({ NoisyMaterial });
 
-const NoiseMesh: React.FC<Props> = ({ uColorA, uColorB, uColorC }) => {
-  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+// interface Props {
+//   uColorA: THREE.Color;
+//   uColorB: THREE.Color;
+//   uColorC: THREE.Color;
+// }: React.FC<Props> { uColorA, uColorB, uColorC }
 
+const NoiseMesh = () => {
+  const materialRef = useRef<ShaderMaterial | null>(null);
+  const dataShader = useMemo(
+    () => ({
+      uniforms: {
+        uColorA: {
+          value: new Color("#ff0000"),
+        },
+        uColorB: {
+          value: new Color("#000000"),
+        },
+        uColorC: {
+          value: new Color("#000000"),
+        },
+        uTime: { value: 0 },
+      },
+      vertex: noisyVertex,
+      fragment: noisyFragment,
+    }),
+    []
+  );
   useFrame(() => {
     const time = 0.005;
     if (materialRef.current) materialRef.current.uniforms.uTime.value += time;
@@ -39,12 +59,12 @@ const NoiseMesh: React.FC<Props> = ({ uColorA, uColorB, uColorC }) => {
       <Environment background frames={Infinity} far={1000} resolution={256}>
         <mesh scale={20}>
           <sphereGeometry args={[1.5, 32, 32]} />
-          <noiseShaderMaterial
+          <shaderMaterial
             ref={materialRef}
-            side={THREE.BackSide}
-            uColorA={uColorA}
-            uColorB={uColorB}
-            uColorC={uColorC}
+            attach="material"
+            uniforms={dataShader.uniforms}
+            vertexShader={dataShader.vertex}
+            fragmentShader={dataShader.fragment}
           />
         </mesh>
       </Environment>

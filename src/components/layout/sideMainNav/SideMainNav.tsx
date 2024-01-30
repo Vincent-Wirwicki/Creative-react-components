@@ -52,7 +52,7 @@ const SideMainNav = () => {
                       {({ isActive }) => (
                         <li
                           key={title + idx}
-                          onClick={e => console.log(e.currentTarget)}
+                          // onClick={e => console.log(e.currentTarget)}
                           className={
                             isActive
                               ? "side-main-nav-link-active"

@@ -1,15 +1,15 @@
-import { Outlet, Link } from "react-router-dom";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { Outlet } from "react-router-dom";
+// import { useState } from "react";
+// import { motion } from "framer-motion";Link
 import PageLayout from "../../components/layout/page/PageLayout";
 
 const ShadersPage = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const handleClick = () => setIsOpen(!isOpen);
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const handleClick = () => setIsOpen(!isOpen);
   return (
     <PageLayout title="shaders">
       <section className="fixed h-full w-full ">
-        <motion.div
+        {/* <motion.div
           className="absolute w-fit h-fit p-2  z-30 top-10 left-1/2 translate-x-[-50%]  	"
           animate={isOpen ? "open" : "close"}
         >
@@ -53,7 +53,7 @@ const ShadersPage = () => {
               NoisyEnv
             </Link>
           </motion.div>
-        </motion.div>
+        </motion.div> */}
 
         <Outlet />
       </section>
