@@ -34,6 +34,8 @@ const useLetterGlicthInAndOut = (
   };
 
   const stopAnimate = () => {
+    setLetters(ogLetters);
+
     cancelAnimationFrame(rafRef.current);
   };
 
