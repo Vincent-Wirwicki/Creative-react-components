@@ -1,94 +1,57 @@
-import {
-  useRef,
-  RefObject,
-  useCallback,
-  useEffect,
-  useState,
-  useMemo,
-} from "react";
+import { useRef, useState } from "react";
 
 const useLetterGlicthReveal = (
-  ref: RefObject<HTMLElement | null>,
   ogLetters: string[],
   perLetter = 5,
   toNextLetter = 15,
   toNextIteration = 20
 ) => {
-  const [isHover, setIsHover] = useState<boolean>(false);
-  const myRef = ref;
-  const wrapperNode = myRef.current;
   const rafRef = useRef(0);
   const char = "/°|²+=-'@!§&\\";
-  const specialChars = useMemo(() => [...char.split("")], []);
+  const specialChars = [...char.split("")];
+  const [letters, setLetters] = useState([...ogLetters]);
 
   let frame = 0;
   let currentLetter = 0;
   let iteration = 0;
 
-  const getRandomIndex = (arr: string[]) =>
-    Math.floor(Math.random() * arr.length);
+  const updateLetters = (currentLetter: number, iteration: number) => {
+    const letters = ogLetters.map((letter, i) => {
+      if (currentLetter > i && iteration >= 1) return letter;
+      return specialChars[Math.floor(Math.random() * specialChars.length)];
+    });
+    setLetters(letters);
+  };
 
-  const resetChildLetters = useCallback(() => {
-    if (wrapperNode)
-      ogLetters.map(
-        (letter, index) => (wrapperNode.childNodes[index].textContent = letter)
-      );
-  }, [ogLetters, wrapperNode]);
-
-  const updateLetters = useCallback(
-    (currentLetter: number, iteration: number) => {
-      if (wrapperNode) {
-        const { childNodes } = wrapperNode;
-        for (let i = 0; i < ogLetters.length; i++) {
-          const randomIndex = getRandomIndex(specialChars);
-          if (currentLetter > i && iteration >= 1) {
-            childNodes[i].textContent = ogLetters[i];
-          } else {
-            childNodes[i].textContent = specialChars[randomIndex];
-          }
-        }
-      }
-    },
-    [ogLetters, specialChars, wrapperNode]
-  );
-
-  const stopAnimate = useCallback(() => {
-    resetChildLetters();
+  const stopAnimate = () => {
+    setLetters(ogLetters);
     cancelAnimationFrame(rafRef.current);
-  }, [resetChildLetters]);
+  };
 
-  const animate = useCallback(() => {
+  const animate = () => {
     if (frame % perLetter === 0) updateLetters(currentLetter, iteration);
     if (frame % toNextLetter === 0 && iteration >= 1) currentLetter++;
     if (frame % toNextIteration === 0) iteration++;
     frame++;
     rafRef.current = requestAnimationFrame(animate);
     if (currentLetter > ogLetters.length) stopAnimate();
-  }, [
-    currentLetter,
-    frame,
-    iteration,
-    ogLetters.length,
-    perLetter,
-    toNextIteration,
-    toNextLetter,
-    stopAnimate,
-    updateLetters,
-  ]);
-
-  const handleMouseEnter = () => setIsHover(true);
-
-  const handleMouseLeave = () => {
-    setIsHover(false);
-    stopAnimate();
   };
 
-  useEffect(() => {
-    if (isHover) animate();
-    return () => stopAnimate();
-  }, [isHover, animate, stopAnimate]);
-
-  return { handleMouseEnter, handleMouseLeave };
+  return {
+    stopAnimate,
+    animate,
+    letters,
+  };
 };
 
 export default useLetterGlicthReveal;
+// const letters = ogLetters.map((l, i) => {
+//   if (currentLetter > i && iteration >= 1) return l;
+//   return specialChars[Math.floor(Math.random() * specialChars.length)];
+// });
+// // setModLet(letters);
+// console.log(modifiedLetters);
+// // setMl(letters);
+// // // console.log(letters);
+// // console.log(ml);
+// // console.log(modifRef.current);

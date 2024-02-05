@@ -16,8 +16,7 @@ const LettersReverseFour: React.FC<Props> = ({
 }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const ogLetters = Array.from(text);
-  const { handleMouseEnter, handleMouseLeave } = useLettersReverseFour(
-    wrapperRef,
+  const { animate, stopAnimate, letters } = useLettersReverseFour(
     ogLetters,
     perLetter
   );
@@ -26,8 +25,8 @@ const LettersReverseFour: React.FC<Props> = ({
     <motion.div
       ref={wrapperRef}
       className="w-fit flex justify-evenly"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={animate}
+      onMouseLeave={stopAnimate}
       variants={wrapper}
       initial="initial"
       whileHover="hover"
@@ -39,7 +38,7 @@ const LettersReverseFour: React.FC<Props> = ({
           variants={spanEl}
           className={className}
         >
-          {letter}
+          {letters[index]}
         </motion.span>
       ))}
     </motion.div>

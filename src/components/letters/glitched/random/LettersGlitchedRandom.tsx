@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import useLettersGlitchedRandom from "./useLettersGlitchedRandom";
 
 interface Props {
@@ -14,10 +13,8 @@ const LettersGlitchedRandom: React.FC<Props> = ({
   perLetter = 10,
   toNextLetter = 50,
 }) => {
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const ogLetters = Array.from(text);
-  const { handleMouseEnter, handleMouseLeave } = useLettersGlitchedRandom(
-    wrapperRef,
+  const { animate, stopAnimate, letters } = useLettersGlitchedRandom(
     ogLetters,
     perLetter,
     toNextLetter
@@ -25,15 +22,14 @@ const LettersGlitchedRandom: React.FC<Props> = ({
 
   return (
     <div
-      ref={wrapperRef}
       className="w-fit"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchEnd={handleMouseLeave}
+      onMouseEnter={animate}
+      onMouseLeave={stopAnimate}
+      // onTouchEnd={handleMouseLeave}
     >
       {ogLetters.map((letter, index) => (
         <span className={className} key={index + letter}>
-          {letter}
+          {letters[index]}
         </span>
       ))}
     </div>

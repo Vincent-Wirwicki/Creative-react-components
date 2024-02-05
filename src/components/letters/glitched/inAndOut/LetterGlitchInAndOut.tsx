@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import useLetterGlicthInAndOut from "./useLetterGlicthInAndOut";
 
 interface Props {
@@ -19,9 +18,7 @@ const LetterGlitchInAndOut: React.FC<Props> = ({
   maxIteration = 3,
 }) => {
   const ogLetters = Array.from(text);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const { handleMouseEnter, handleMouseLeave } = useLetterGlicthInAndOut(
-    wrapperRef,
+  const { animate, stopAnimate, letters } = useLetterGlicthInAndOut(
     ogLetters,
     perLetter,
     toNextLetter,
@@ -30,15 +27,10 @@ const LetterGlitchInAndOut: React.FC<Props> = ({
   );
 
   return (
-    <div
-      ref={wrapperRef}
-      className=""
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div onMouseEnter={animate} onMouseLeave={stopAnimate}>
       {ogLetters.map((letter, index) => (
         <span className={className} key={index + letter}>
-          {letter}
+          {letters[index]}
         </span>
       ))}
     </div>

@@ -1,11 +1,11 @@
 import {
-  // useEffect,
+  useEffect,
   RefObject,
   useRef,
-  useLayoutEffect,
+  // useLayoutEffect,
   useCallback,
 } from "react";
-import { store } from "../../../storeValtio/store";
+import { store } from "../../../../storeValtio/store";
 
 const useLerpCursor = (ref: RefObject<HTMLElement>, ease: number = 0.075) => {
   const frame = useRef(0);
@@ -30,7 +30,7 @@ const useLerpCursor = (ref: RefObject<HTMLElement>, ease: number = 0.075) => {
   const handleMouseMove = ({ clientX, clientY }: MouseEvent) =>
     (mousePosRef.current = { mx: clientX, my: clientY });
 
-  const updatePos = useCallback(() => {
+  const animate = useCallback(() => {
     const { mx, my } = mousePosRef.current;
     if (ref.current) {
       txRef.current = lerp(txRef.current, mx, ease);
@@ -44,23 +44,25 @@ const useLerpCursor = (ref: RefObject<HTMLElement>, ease: number = 0.075) => {
         ref.current.style.clipPath = "circle(10% at 50% 50%)";
       }
     }
-    frame.current = requestAnimationFrame(updatePos);
+    frame.current = requestAnimationFrame(animate);
   }, [ease, ref]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!ref.current) return console.error("invalid ref");
     if (ease > 1 || ease < 0)
       return console.error(
         "Ease value is not between 0 & 1, best value are between 0 & 0.5"
       );
     boundingRef();
-    frame.current = requestAnimationFrame(updatePos);
+    animate();
     window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(frame.current);
     };
-  }, [ref, ease, updatePos, boundingRef]);
+  }, [ref, ease, animate, boundingRef]);
+
+  return { txRef, tyRef };
 };
 
 export default useLerpCursor;

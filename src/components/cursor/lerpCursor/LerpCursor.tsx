@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import useLerpCursor from "./useLerpCursor";
+import useLerpCursor from "./hooks/useLerpCursor";
 
 interface Props {
   ease?: number;
@@ -19,11 +19,12 @@ const LerpCursor: React.FC<Props> = ({
   return (
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 z-[99] pointer-events-none mix-blend-exclusion"
+      className="fixed top-0 left-0 z-[99] pointer-events-none mix-blend-exclusion "
       style={{
         width: radius,
         height: radius,
         backgroundColor: color,
+        // transform: `translate3d(${txRef.current}px, ${tyRef.current}px, 0)`,
         border: `2px solid ${color}`,
         transition: "clip-path 300ms ease",
       }}

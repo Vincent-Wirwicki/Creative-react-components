@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { motion } from "framer-motion";
 import { wrapper, spanEl } from "./variantsConfigLettersReverseThree";
 import useLettersReverseThree from "./useLettersReverseThree"; // import { wrapper, spanEl } from "./variantsConfigLettersReverseTwo";
@@ -14,20 +13,17 @@ const LettersReverseThree: React.FC<Props> = ({
   className,
   perLetter = 6,
 }) => {
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const ogLetters = Array.from(text);
-  const { handleMouseEnter, handleMouseLeave } = useLettersReverseThree(
-    wrapperRef,
+  const { animate, stopAnimate, letters } = useLettersReverseThree(
     ogLetters,
     perLetter
   );
 
   return (
     <motion.div
-      ref={wrapperRef}
       className="w-fit flex"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={animate}
+      onMouseLeave={stopAnimate}
       variants={wrapper}
       initial="initial"
       whileHover="hover"
@@ -38,7 +34,7 @@ const LettersReverseThree: React.FC<Props> = ({
           variants={spanEl}
           className={className}
         >
-          {letter}
+          {letters[index]}
         </motion.span>
       ))}
     </motion.div>

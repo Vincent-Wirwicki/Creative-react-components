@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import useLetterGlicthReveal from "./useLetterGlicthReveal";
 
 interface Props {
@@ -17,9 +16,7 @@ const LetterGlitchReveal: React.FC<Props> = ({
   toNextIteration = 30,
 }) => {
   const ogLetters = Array.from(text);
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const { handleMouseEnter, handleMouseLeave } = useLetterGlicthReveal(
-    wrapperRef,
+  const { stopAnimate, animate, letters } = useLetterGlicthReveal(
     ogLetters,
     perLetter,
     toNextLetter,
@@ -27,15 +24,10 @@ const LetterGlitchReveal: React.FC<Props> = ({
   );
 
   return (
-    <div
-      ref={wrapperRef}
-      className=""
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div onMouseEnter={animate} onMouseLeave={stopAnimate}>
       {ogLetters.map((letter, index) => (
         <span className={className} key={index + letter}>
-          {letter}
+          {letters[index]}
         </span>
       ))}
     </div>
