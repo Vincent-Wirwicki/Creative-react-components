@@ -10,9 +10,9 @@ const ImageTrail: React.FC<Props> = ({ urls }) => {
   const [scope, animate] = useAnimate();
   const mousePos = useRef({ x: 0, y: 0, prev: { x: 0, y: 0 } });
   const imgIndex = useRef(0);
-  const zIdx = useRef(0);
-  let zIndxImg = 0;
+
   const treshold = 100;
+  let zIndxImg = 0;
 
   const calcIndex = (arraylength: number) => {
     imgIndex.current++;
@@ -40,6 +40,7 @@ const ImageTrail: React.FC<Props> = ({ urls }) => {
     el.style.left = `${prev.x - width / 2}px`;
     el.style.zIndex = zIndxImg.toString();
     zIndxImg++;
+
     animate(
       `[data-index="${i}"]`,
       {
@@ -80,42 +81,3 @@ const ImageTrail: React.FC<Props> = ({ urls }) => {
 };
 
 export default ImageTrail;
-
-// const onMove = (e: MouseEvent) => {
-//   const { prev } = mousePos.current;
-//   const dist = Math.hypot(e.clientX - prev.x, e.clientY - prev.y);
-//   if (dist > 50) {
-//     const i = calcIndex(colors.length);
-//     prev.x = e.clientX;
-//     prev.y = e.clientY;
-//     // if (wrapperRef.current) {
-//     //   const node =
-//     //     wrapperRef.current.children[i].querySelector("[data-index=]");
-//     // }
-//   }
-// };
-
-// useEffect(() => {
-//   const onMove = (e: MouseEvent) => {
-//     // const { x, y, prev } = mousePos.current;
-//     mousePos.current.x = e.clientX;
-//     mousePos.current.y = e.clientY;
-//   };
-
-//   const render = () => {
-//     const { x, y, prev } = mousePos.current;
-
-//     const dist = Math.hypot(x - prev.x, y - prev.y);
-//     if (dist > 50) {
-//       const i = calcIndex(colors.length);
-//       const el = document.querySelector(`[data-index]=${i}`);
-//       el.st;
-//       prev.x = x;
-//       prev.y = y;
-//       console.log("dist is true");
-//     }
-//     raf.current = requestAnimationFrame(render);
-//   };
-//   render();
-//   window.addEventListener("mousemove", onMove);
-// });
