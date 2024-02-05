@@ -6,15 +6,13 @@ import LerpCursor from "../../../components/cursor/lerpCursor/LerpCursor";
 // import CardCssPropetiesLerpPage from "./card/CardCssPropetiesLerpPage";
 // import BasicPageTransition from "../../components/pageTransition/basic/BasicPageTransition";
 
-// import ImageTrail from "../../../components/cursor/imgTrial/ImageTrail";
-
 const LerpCursorPage = () => {
   // const { handleCursorEnter, handleCursorLeave } = snapshot(store);
   return (
     <>
       <LerpCursor color="#fca5a5" />
       {/* <LerpCursor radius={128} ease={0.08} color="#0a0a0a" /> */}
-      <section className="section-center">{/* <ImageTrail /> */}</section>
+      <section className="section-center">work in progress</section>
     </>
   );
 };

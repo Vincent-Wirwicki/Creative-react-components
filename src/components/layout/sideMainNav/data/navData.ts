@@ -11,7 +11,10 @@ export type NavDataType = {
 export const navData: NavDataType[] = [
   {
     main: { path: "/cursors/lerp", title: "Cursors" },
-    sub: [{ path: "/cursors/lerp", title: "lerp cursor" }],
+    sub: [
+      { path: "/cursors/lerp", title: "lerp cursor" },
+      { path: "/cursors/image-trail", title: "img trial" },
+    ],
   },
   // { path: "/navbars", title: "Nav" },
   {

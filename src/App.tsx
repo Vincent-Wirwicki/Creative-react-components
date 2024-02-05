@@ -11,6 +11,7 @@ import HomePage from "./pages/Home/HomePage";
  */
 import CursorsPage from "./pages/Cursors/CursorsPage";
 import LerpCursorPage from "./pages/Cursors/lerp/LerpCursorPage";
+import ImageTrialPage from "./pages/Cursors/imageTrials/ImageTrialPage";
 
 /**-----------
  * text split page
@@ -70,6 +71,7 @@ const App = () => {
           {/* cursor page */}
           <Route path="/cursors" element={<CursorsPage />}>
             <Route path="/cursors/lerp" element={<LerpCursorPage />} />
+            <Route path="/cursors/image-trail" element={<ImageTrialPage />} />
           </Route>
 
           {/*text page */}
