@@ -1,5 +1,5 @@
-import { useFrame, extend } from "@react-three/fiber";
-import { LavaLampMaterial } from "./LavaLampMaterials";
+import { useFrame } from "@react-three/fiber";
+// import { LavaLampMaterial } from "./LavaLampMaterials";
 import { useRef, useMemo } from "react";
 import { Color } from "three";
 
@@ -18,7 +18,7 @@ import { lavaLampVertex } from "./shader/lavaLampVertex";
 //   }
 // }
 
-extend({ LavaLampMaterial });
+// extend({ LavaLampMaterial });
 
 const LavaLampMesh = () => {
   // const shaderColors = useMemo(
