@@ -28,13 +28,14 @@ import ParticulesPage from "./pages/Particules/ParticulesPage";
 import ParticulesConstellationPage from "./pages/Particules/constellation/ParticulesConstellationPage";
 import ParticulesMouseMovePage from "./pages/Particules/interactivity/ParticulesMouseMovePage";
 import ParticulesFBOPage from "./pages/Particules/FBO/ParticulesFBOPage";
+import ParticulesTerrainPage from "./pages/Particules/terrain/ParticulesTerrainPage";
 
 /**-----------
  * shader page
  * ------------
  */
 import ShadersPage from "./pages/Shaders/ShadersPage";
-import NoisePage from "./pages/Shaders/noise/NoisePage";
+// import NoisePage from "./pages/Shaders/noise/NoisePage";
 import LavaLampPage from "./pages/Shaders/lavaLamp/LavaLampPage";
 
 /**-----------
@@ -90,12 +91,16 @@ const App = () => {
               element={<ParticulesMouseMovePage />}
             />
             <Route path="/particules/FBO" element={<ParticulesFBOPage />} />
+            <Route
+              path="/particules/terrain"
+              element={<ParticulesTerrainPage />}
+            />
           </Route>
 
           {/* shader page */}
           <Route path="/shaders" element={<ShadersPage />}>
             <Route path="/shaders/lavaLamp" element={<LavaLampPage />} />
-            <Route path="/shaders/noise" element={<NoisePage />} />
+            {/* <Route path="/shaders/noise" element={<NoisePage />} /> */}
           </Route>
 
           {/* button page */}

@@ -38,13 +38,14 @@ export const navData: NavDataType[] = [
       { path: "/particules/constellation", title: "Cloud" },
       { path: "/particules/mousemove", title: "On move" },
       { path: "/particules/FBO", title: "FBO" },
+      { path: "/particules/terrain", title: "Terrain" },
     ],
   },
   {
     main: { path: "/shaders/lavaLamp", title: "Shaders" },
     sub: [
       { path: "/shaders/lavaLamp", title: "Lava lamp" },
-      { path: "/shaders/noise", title: "Noisy env" },
+      // { path: "/shaders/noise", title: "Noisy env" },
     ],
   },
 ];

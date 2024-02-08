@@ -17,28 +17,28 @@ import {
   ShaderMaterial,
 } from "three";
 
-import RenderMaterialFBOone from "../shader/render/RenderMaterialFBOCurl";
-import SimMaterialFBOone from "../shader/sim/SimMaterialFBOCurl";
+import RenderMaterialFBOCurl from "../shader/render/RenderMaterialFBOCurl";
+import SimMaterialFBOCurl from "../shader/sim/SimMaterialFBOCurl";
 
 extend({
-  SimMaterialFBOone: SimMaterialFBOone,
-  RenderMaterialFBOone: RenderMaterialFBOone,
+  SimMaterialFBOCurl: SimMaterialFBOCurl,
+  RenderMaterialFBOCurl: RenderMaterialFBOCurl,
 });
 
 declare module "@react-three/fiber" {
   interface ThreeElements {
-    renderMaterialFBOone: Object3DNode<
-      RenderMaterialFBOone,
-      typeof RenderMaterialFBOone
+    renderMaterialFBOCurl: Object3DNode<
+      RenderMaterialFBOCurl,
+      typeof RenderMaterialFBOCurl
     >;
   }
 }
 
 declare module "@react-three/fiber" {
   interface ThreeElements {
-    simMaterialFBOone: Object3DNode<
-      SimMaterialFBOone,
-      typeof SimMaterialFBOone
+    simMaterialFBOCurl: Object3DNode<
+      SimMaterialFBOCurl,
+      typeof SimMaterialFBOCurl
     >;
   }
 }
@@ -96,7 +96,7 @@ const ParticulesFBOCurl = () => {
     <>
       {createPortal(
         <mesh>
-          <simMaterialFBOone ref={simulationMaterialRef} args={[size]} />
+          <simMaterialFBOCurl ref={simulationMaterialRef} args={[size]} />
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
@@ -115,7 +115,7 @@ const ParticulesFBOCurl = () => {
         scene
       )}
       <points>
-        <renderMaterialFBOone
+        <renderMaterialFBOCurl
           ref={renderMaterialRef}
           blending={AdditiveBlending}
           transparent={true}
@@ -126,7 +126,7 @@ const ParticulesFBOCurl = () => {
             attach="attributes-position"
             count={particles.length / 3}
             array={particles}
-            itemSize={2}
+            itemSize={3}
           />
         </bufferGeometry>
       </points>

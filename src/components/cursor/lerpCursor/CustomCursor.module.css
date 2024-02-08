@@ -1,8 +1,0 @@
-.cursor {
-    position: fixed;
-    z-index: 9999;
-    pointer-events: none;
-    mix-blend-mode: difference;
-    border-radius: 50%;
-    transition: clip-path 300ms ease
-}

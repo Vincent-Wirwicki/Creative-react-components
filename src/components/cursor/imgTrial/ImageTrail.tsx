@@ -42,20 +42,20 @@ const ImageTrail: React.FC<Props> = ({ urls }) => {
     zIndxImg++;
 
     animate(
-      `[data-index="${i}"]`,
+      el,
       {
         opacity: [0.8, 1, 1, 0],
         transform: [
-          "translateY(-10%) ",
-          "translateY(0%) ",
-          "translateY(10%) ",
-          "translateY(0%)  ",
+          "translate(-10%, -20%) ",
+          "translate(0%, 0%) ",
+          "translate(10%, 25%) ",
+          "translate(0%, 0%)  ",
         ],
         clipPath: [
           "inset(25% 0 25% 0)",
           "inset(0%)",
           "inset(0%)",
-          "inset(0 100% 0 0)",
+          "inset(0% 100% 0% 0)",
         ],
       },
       { duration: 1.5, ease: "circIn" }
