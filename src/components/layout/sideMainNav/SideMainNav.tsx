@@ -1,7 +1,7 @@
-import { navData } from "./data/navData";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
+import { navPaths } from "../../../routing/navPaths";
 
 const SideMainNav = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -36,7 +36,7 @@ const SideMainNav = () => {
           // }}
           transition={{ duration: 0.3, staggerChildren: 0.1 }}
         >
-          {navData.map(({ main: { title }, sub }, index) => (
+          {navPaths.map(({ main: { title }, sub }, index) => (
             <motion.li
               key={index + title}
               // variants={{

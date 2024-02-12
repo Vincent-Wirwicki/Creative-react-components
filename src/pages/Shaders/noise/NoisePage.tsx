@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react";
 
-const NoiseCanvas = lazy(() => import("../../../shaders/noise/NoiseCanvas"));
+const NoisyCanvas = lazy(() => import("../../../shaders/noisy/NoisyScene"));
 
 const NoisePage = () => {
   return (
     <Suspense fallback={null}>
-      <NoiseCanvas />
+      <NoisyCanvas />
     </Suspense>
   );
 };

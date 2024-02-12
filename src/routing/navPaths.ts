@@ -1,14 +1,4 @@
-export type NavType = {
-  path: string;
-  title: string;
-};
-
-export type NavDataType = {
-  main: NavType;
-  sub?: NavType[];
-};
-
-export const navData: NavDataType[] = [
+export const navPaths = [
   {
     main: { path: "/cursors/lerp", title: "Cursors" },
     sub: [
@@ -45,8 +35,7 @@ export const navData: NavDataType[] = [
     main: { path: "/shaders/lavaLamp", title: "Shaders" },
     sub: [
       { path: "/shaders/lavaLamp", title: "Lava lamp" },
-      // { path: "/shaders/noise", title: "Noisy env" },
+      { path: "/shaders/noise", title: "Noisy" },
     ],
   },
 ];
-// /list/IPaeeegimmrt;
