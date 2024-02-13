@@ -1,10 +1,10 @@
-export const noisyVertex = /* glsl */ `
+export const noisyFragment = /* glsl */ `
+
     uniform float uTime;
+
     varying vec3 vPosition;
     varying vec2 vUv;
-    varying vec3 vTarget;
-    varying float vNoise;
-
+    #define M_PI 3.14159265358979323846
 //	Classic Perlin 3D Noise 
 //	by Stefan Gustavson
 //
@@ -79,28 +79,35 @@ float cnoise(vec3 P){
   float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
   return 2.2 * n_xyz;
 }
-
-    void main() {   
-        vUv = uv;
-        vec3 pos = position;
-        vPosition = position;
-
+    void main() {
+        vec3 pos = vPosition;
         float radius = length(pos.xy);
         float angle = atan(pos.x, pos.y);
-        vec3 target = vec3(cos(angle + uTime*4.), sin(angle + uTime*4.),0.) * radius;
-        vTarget = target;
-        
-        float tx = smoothstep(-4.,4.,target.x);
-        float ty = smoothstep(-4.,4.,target.y);
-    
-        float noise = cnoise(vec3(pos + uTime*0.25));
-        vNoise = noise;
 
-        pos = pos + .25 * (1. - noise * 3. * (tx - ty)) ;
-        pos.y +=  noise * ty  *tx * cos(angle - radius) * 3.   ;
-        pos.x +=  noise * tx  *ty * sin(angle - radius) * 3. ;
+        vec3 target = vec3(cos(angle + uTime*2.), sin(angle + uTime*2.),0.) * radius;
+        float noise = cnoise(vec3(pos));
 
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1. );
+        // float sx = smoothstep(-1., 1., sin(pos.x) * target.x);
+        // float sy = smoothstep(-1., 1., cos(pos.y) * target.y);
+
+        float sx = smoothstep(-1., 1.,target.x );
+        float sy = smoothstep(-1., 1.,target.y);
+
+        vec3 colorA = vec3(0.25, 0.5, .75);
+        vec3 colorB = vec3(0., 0.1, 0.2);
+        // colorB.r *= noise;
+        // colorB.b -= noise;
+        // colorB.g -= noise;
+        vec3 color = mix(colorA , colorB, 1.- sx*sy);
+
+        colorB.r *= noise;
+        colorB.b -= noise;
+        colorB.g -= noise;
+        gl_FragColor = vec4(colorB,1.);
+
     }
 
 `;
+
+// vec4(1. - target.y * target.x, 1.,1.,1.); (pos.z +1.)*0.5
+// vec4(sin(sy * uTime *2.), cos(sx * uTime*2.), 0.5,1.);

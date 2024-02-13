@@ -8,18 +8,27 @@ import useTextRoutes from "./text/useTextRoutes";
 import useWipRoutes from "./wip/useWipRoutes";
 
 const useAppRoutes = () => {
-  const AppRoutes = {
-    ButtonsRoutes: useButtonsRoutes(),
-    CursorsRoutes: useCursorsRoutes(),
-    HomeRoutes: useHomeRoutes(),
-    ListRoutes: useListRoutes(),
-    ParticulesRoutes: useParticulesRoutes(),
-    ShaderRoutes: useShadersRoutes(),
-    TextRoutes: useTextRoutes(),
-    WipRoutes: useWipRoutes(),
-  };
+  const ButtonsRoutes = useButtonsRoutes();
+  const CursorsRoutes = useCursorsRoutes();
+  const HomeRoutes = useHomeRoutes();
+  const ListRoutes = useListRoutes();
+  const ParticulesRoutes = useParticulesRoutes();
+  const ShaderRoutes = useShadersRoutes();
+  const TextRoutes = useTextRoutes();
+  const WipRoutes = useWipRoutes();
 
-  return <>{Object.values(AppRoutes).map(route => route)}</>;
+  return (
+    <>
+      {HomeRoutes}
+      {ButtonsRoutes}
+      {CursorsRoutes}
+      {ListRoutes}
+      {ShaderRoutes}
+      {TextRoutes}
+      {ParticulesRoutes}
+      {WipRoutes}
+    </>
+  );
 };
 
 export default useAppRoutes;

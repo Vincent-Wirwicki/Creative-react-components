@@ -5,8 +5,7 @@ import NoisyMesh from "./NoisyMesh";
 const NoisyScene = () => {
   return (
     <Canvas camera={{ position: [0, 0, 25] }}>
-      <color attach="background" args={["black"]} />
-
+      {/* <color attach="background" args={["black"]} /> */}
       <NoisyMesh />
       <OrbitControls />
     </Canvas>

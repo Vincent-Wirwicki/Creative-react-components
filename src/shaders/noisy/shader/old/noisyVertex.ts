@@ -2,8 +2,6 @@ export const noisyVertex = /* glsl */ `
     uniform float uTime;
     varying vec3 vPosition;
     varying vec2 vUv;
-    varying vec3 vTarget;
-    varying float vNoise;
 
 //	Classic Perlin 3D Noise 
 //	by Stefan Gustavson
@@ -87,18 +85,20 @@ float cnoise(vec3 P){
 
         float radius = length(pos.xy);
         float angle = atan(pos.x, pos.y);
-        vec3 target = vec3(cos(angle + uTime*4.), sin(angle + uTime*4.),0.) * radius;
-        vTarget = target;
-        
-        float tx = smoothstep(-4.,4.,target.x);
-        float ty = smoothstep(-4.,4.,target.y);
-    
-        float noise = cnoise(vec3(pos + uTime*0.25));
-        vNoise = noise;
 
-        pos = pos + .25 * (1. - noise * 3. * (tx - ty)) ;
-        pos.y +=  noise * ty  *tx * cos(angle - radius) * 3.   ;
-        pos.x +=  noise * tx  *ty * sin(angle - radius) * 3. ;
+        vec3 target = vec3(cos(angle + uTime*2.), sin(angle + uTime*2.),0.) * radius;
+        
+        float tx = smoothstep(-1.,1.,target.x);
+        float ty = smoothstep(-1.,1.,target.y);
+        
+        float noise = cnoise(vec3(pos + uTime*0.25));
+        // pos = pos + (1.-  noise * tx + noise * ty)*2.15 ;
+        // pos.x += (1.-  noise * tx )*tx ;
+        pos.y += ( noise * ty  )*tx * cos(angle - radius) * 4.   ;
+        pos.x += ( noise * tx  )*ty *sin(angle - radius) * 4. ;
+        // pos.z += (noise * target.z);
+
+        // pos = pos +( 1.- noise * tx * noise * ty *abs(pos.z))*2.15 ;
 
         gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1. );
     }
