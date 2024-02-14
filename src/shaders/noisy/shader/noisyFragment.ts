@@ -16,16 +16,18 @@ export const noisyFragment = /* glsl */ `
         vec3 target = vTarget;
         float noise = vNoise;
 
+        float dist = length(pos.xy);
+
         float sx = smoothstep(-10., 10.,target.x );
         float sy = smoothstep(-10., 10.,target.y);
 
-        vec3 color = vec3(0.5, .25, .5);
+        vec3 color = vec3(0.75, .25, .5);
 
         color.g *= noise * sx *5.;
-        color.r *= noise * sy *5.;
+        color.r *= noise * sy *5. ;
         // color.b = noise;
 
-        gl_FragColor = vec4(color ,1.);
+        gl_FragColor = vec4(color  + noise *0.5 ,(noise + 0.5 ));
 
     }
 

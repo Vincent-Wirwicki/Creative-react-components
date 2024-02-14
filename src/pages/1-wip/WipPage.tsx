@@ -1,11 +1,16 @@
 // import React from 'react'
+import { lazy, Suspense } from "react";
 
-import NoisyScene from "../../shaders/noisy/NoisyScene";
+const WipComponent = lazy(
+  () => import("../../shaders/defaultTemplate/DefaultShaderScene")
+);
 
 const WipPage = () => {
   return (
     <div className="h-screen w-screen">
-      <NoisyScene />
+      <Suspense fallback={null}>
+        <WipComponent />
+      </Suspense>
     </div>
   );
 };
