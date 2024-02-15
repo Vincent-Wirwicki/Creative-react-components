@@ -11,7 +11,7 @@ export default class SimMaterialFBOCurl extends ShaderMaterial {
       FloatType
     );
     positionsTexture.needsUpdate = true;
-    console.log(positionsTexture);
+
     super({
       uniforms: {
         uPositions: { value: positionsTexture },
@@ -163,12 +163,15 @@ export default class SimMaterialFBOCurl extends ShaderMaterial {
     void main() {
       vec2 uv = vUv;
       vec3 pos = texture2D( uPositions, uv ).xyz;
-      
-      vec3 target = pos + curl( pos.x * uFrequency , pos.y * uFrequency, pos.z * uFrequency ) * uAmplitude ;
-      vec2 toCenter = uv - vec2(.5);
-      float d = length(pos - target) / uMaxDist ;
-      pos = mix( pos, target, pow( d, 5. ) );
-
+      // pos.z +=mod(uTime/30.,3.);
+      // vec3 target = pos + curl( pos.x * uFrequency , pos.y * uFrequency, pos.z * uFrequency ) * uAmplitude ;
+      // vec2 toCenter = uv - vec2(.5);
+      // float d = length(pos - target) / uMaxDist ;
+      // pos = mix( pos, target, pow( d, 5. ) );
+      vec3 noise = curl( pos.x * uFrequency, pos.y * uFrequency* sin(uTime *0.1), pos.z * uFrequency * cos(uTime*0.1) ) * uAmplitude;
+      pos.x *=  noise.x *  .5 ;
+      pos.y +=  noise.y +10.;
+      pos.z +=  noise.z +10. ;
       gl_FragColor = vec4( pos, 1. );
 
       }`,

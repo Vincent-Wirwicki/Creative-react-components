@@ -2,7 +2,7 @@ export const navPaths = [
   {
     main: { path: "/cursors/lerp", title: "Cursors" },
     sub: [
-      { path: "/cursors/lerp", title: "lerp cursor" },
+      { path: "/cursors/lerp", title: "lerp" },
       { path: "/cursors/image-trail", title: "img trial" },
     ],
   },

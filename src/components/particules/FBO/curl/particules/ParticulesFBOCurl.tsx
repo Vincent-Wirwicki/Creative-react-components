@@ -8,6 +8,7 @@ import {
 import { useMemo, useRef } from "react";
 import {
   AdditiveBlending,
+  DoubleSide,
   // DoubleSide,
   FloatType,
   NearestFilter,
@@ -77,7 +78,12 @@ const ParticulesFBOCurl = () => {
   });
 
   useFrame(state => {
-    const { gl, clock } = state;
+    const {
+      gl,
+      clock,
+      camera: { position },
+    } = state;
+    console.log(position);
 
     gl.setRenderTarget(target);
     gl.clear();
@@ -119,7 +125,7 @@ const ParticulesFBOCurl = () => {
           ref={renderMaterialRef}
           blending={AdditiveBlending}
           transparent={true}
-          // side={DoubleSide}
+          side={DoubleSide}
         />
         <bufferGeometry>
           <bufferAttribute
