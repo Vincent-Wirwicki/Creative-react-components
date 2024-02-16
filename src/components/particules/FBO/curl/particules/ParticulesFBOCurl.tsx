@@ -81,9 +81,7 @@ const ParticulesFBOCurl = () => {
     const {
       gl,
       clock,
-      camera: { position },
     } = state;
-    console.log(position);
 
     gl.setRenderTarget(target);
     gl.clear();

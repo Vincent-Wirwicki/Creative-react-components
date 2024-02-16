@@ -1,3 +1,5 @@
+import { textPaths } from "./text/useTextRoutes";
+
 export const navPaths = [
   {
     main: { path: "/cursors/lerp", title: "Cursors" },
@@ -6,11 +8,7 @@ export const navPaths = [
       { path: "/cursors/image-trail", title: "img trial" },
     ],
   },
-  // { path: "/navbars", title: "Nav" },
-  {
-    main: { path: "/text", title: "Text" },
-    sub: [{ path: "/text/text-split", title: "Text split" }],
-  },
+  { ...textPaths },
   {
     main: { path: "/buttons", title: "Buttons" },
     sub: [{ path: "/buttons/magnetic", title: "Magnetic" }],
