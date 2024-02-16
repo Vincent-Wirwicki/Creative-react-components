@@ -1,39 +1,15 @@
 import { textPaths } from "./text/useTextRoutes";
+import { shaderPaths } from "./shaders/useShadersRoutes";
+import { particulesPaths } from "./particules/useParticulesRoutes";
+import { listPaths } from "./list/useListRoutes";
+import { buttonPaths } from "./buttons/useButtonsRoutes";
+import { cursorPaths } from "./cursors/useCursorsRoutes";
 
 export const navPaths = [
-  {
-    main: { path: "/cursors/lerp", title: "Cursors" },
-    sub: [
-      { path: "/cursors/lerp", title: "lerp" },
-      { path: "/cursors/image-trail", title: "img trial" },
-    ],
-  },
+  { ...cursorPaths },
   { ...textPaths },
-  {
-    main: { path: "/buttons", title: "Buttons" },
-    sub: [{ path: "/buttons/magnetic", title: "Magnetic" }],
-  },
-  {
-    main: { path: "/list", title: "List " },
-    sub: [
-      { path: "/list/imageTranslate", title: "translate" },
-      { path: "/list/imageRgbShift", title: "RGB Shift" },
-    ],
-  },
-  {
-    main: { path: "/particules", title: "Particules" },
-    sub: [
-      { path: "/particules/constellation", title: "Cloud" },
-      { path: "/particules/mousemove", title: "On move" },
-      { path: "/particules/FBO", title: "FBO" },
-      { path: "/particules/terrain", title: "Terrain" },
-    ],
-  },
-  {
-    main: { path: "/shaders/lavaLamp", title: "Shaders" },
-    sub: [
-      { path: "/shaders/lavaLamp", title: "Lava lamp" },
-      { path: "/shaders/noise", title: "Noisy" },
-    ],
-  },
+  { ...buttonPaths },
+  { ...listPaths },
+  { ...particulesPaths },
+  { ...shaderPaths },
 ];

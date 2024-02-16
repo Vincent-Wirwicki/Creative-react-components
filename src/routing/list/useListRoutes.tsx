@@ -4,6 +4,14 @@ import ListImageTranslatePage from "../../pages/List/translateImage/ListImageTra
 import ListRgbShiftPage from "../../pages/List/rgbShift/ListRgbShiftPage";
 import ListImagePerItemOne from "../../pages/List/imagePerItem/component/ListImagePerItemOne";
 
+export const listPaths = {
+  main: { path: "/list", title: "List " },
+  sub: [
+    { path: "/list/imageTranslate", title: "translate" },
+    { path: "/list/imageRgbShift", title: "RGB Shift" },
+  ],
+};
+
 const useListRoutes = () => {
   return (
     <Route path="/list" element={<ListPage />}>
