@@ -1,6 +1,7 @@
 import useLetterGlicthInAndOutInfinit from "./useLetterGlicthInAndOutInfinit";
 
 interface Props {
+  words:string[]
   className?: string;
   perLetter?: number;
   toNextLetter?: number;
@@ -9,13 +10,14 @@ interface Props {
 }
 
 const LetterGlitchInAndOutInfinit: React.FC<Props> = ({
+  words,
   className,
   perLetter = 15,
   toNextLetter = 5,
-  toNextIteration = 5,
-  maxIteration = 15,
+  toNextIteration = 10,
+  maxIteration = 20,
 }) => {
-  const words = ["infinit", "glitched", "letters"];
+
   const { letters } = useLetterGlicthInAndOutInfinit(
     words,
     perLetter,
@@ -38,7 +40,7 @@ const LetterGlitchInAndOutInfinit: React.FC<Props> = ({
   return (
     <div>
       {displayText.map((_, index) => (
-        <span className={className} key={index} style={{ width: "50px" }}>
+        <span className={className} key={index}>
           {letters[index]}
         </span>
       ))}

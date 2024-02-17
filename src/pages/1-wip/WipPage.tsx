@@ -4,7 +4,7 @@ import { lazy, Suspense } from "react";
 const WipComponent = lazy(
   () =>
     import(
-      "../../components/letters/glitched/inAndOutInfinit/LetterGlitchInAndOutInfinit"
+      "../../components/letters/glitched/infinit/inAndOutInfinit/LetterGlitchInAndOutInfinit"
     )
 );
 

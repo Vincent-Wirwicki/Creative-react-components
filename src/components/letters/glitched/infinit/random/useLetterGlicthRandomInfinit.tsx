@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from "react";
+import useLongestWord from "../../utils/useLongestWord";
+import useRandomUniqueIndex from "../../utils/useRandomUniqueIndex";
 // useEffect, useMemo, useCallback
-const useLetterGlicthInAndOutInfinit = (
+const useLetterGlicthRandomInfinit = (
   words: string[],
   perLetter = 5,
   toNextLetter = 20,
@@ -10,7 +12,6 @@ const useLetterGlicthInAndOutInfinit = (
   const [letters, setLetters] = useState([...words[0]]);
 
   const rafRef = useRef(0);
-  // const letterRef = useRef([...words[0]]);
   const stateRef = useRef({
     frame: 0,
     wordIndex: 0,
@@ -19,15 +20,20 @@ const useLetterGlicthInAndOutInfinit = (
     currentLetter: 0,
   });
 
-  const longestWord = () => {
-    let longestWord = "";
-    words.forEach(word => {
-      if (word.length > longestWord.length) longestWord = word;
-    });
-    return longestWord.length;
-  };
+  const maxLength = useLongestWord(words);
+  const indices = useRandomUniqueIndex(maxLength);
 
-  const maxLength = longestWord();
+  const specialChars = [..."°²+'@*!&°²+'@*!&".split("")];
+  const currentWord: string[] = Array(maxLength).fill("");
+
+  const updateArray = (i: number): string[] => {
+    const word = words[i].split("");
+    for (let i = 0; i < maxLength; i++) {
+      currentWord.splice(i, 1, "_");
+      if (i < word.length) currentWord.splice(i, 1, word[i]);
+    }
+    return currentWord;
+  };
 
   const updateLetters = (
     currentLetter: number,
@@ -36,28 +42,19 @@ const useLetterGlicthInAndOutInfinit = (
     resetLetter: number,
     i: number
   ) => {
-    const specialChars = [..."°²+'@*!&".split("")];
-    const word = words[i].split("");
-    const wordLenght = Array(maxLength).fill("");
-    const random2 =
-      specialChars[Math.floor(Math.random() * specialChars.length)];
-    for (let i = 0; i < maxLength; i++) {
-      wordLenght.splice(i, 1, "");
-      if (i < word.length) wordLenght.splice(i, 1, word[i]);
-    }
-
-    const letters: string[] = wordLenght.map((letter, i) => {
-      const random =
-        specialChars[Math.floor(Math.random() * specialChars.length)];
-      if (resetLetter > i && iteration > maxIteration) return letter;
-      if (currentLetter > i) return random;
-      return random2;
+    const currentWord = updateArray(i);
+    const letters = currentWord.map((letter, i) => {
+      const random = specialChars[indices[i]];
+      if (resetLetter > indices[i] && iteration > maxIteration) return random;
+      if (currentLetter >= indices[i]) return letter;
+      return random;
     });
+
     setLetters(() => [...letters]);
-    // letterRef.current = letters;
   };
 
-  const animate = () => {
+  const timeline = () => {
+    // update letter
     if (stateRef.current.frame % perLetter === 0)
       updateLetters(
         stateRef.current.currentLetter,
@@ -66,29 +63,36 @@ const useLetterGlicthInAndOutInfinit = (
         stateRef.current.resetLetter,
         stateRef.current.wordIndex
       );
+    //frame to next letter
     if (stateRef.current.frame % toNextLetter === 0) {
       stateRef.current.currentLetter++;
     }
+    //frame to next iteration
     if (stateRef.current.frame % toNextIteration === 0) {
       stateRef.current.iteration++;
     }
+    // frame to reset
     if (
       stateRef.current.frame % toNextLetter === 0 &&
       stateRef.current.iteration >= maxIteration
     ) {
       stateRef.current.resetLetter++;
     }
-    if (stateRef.current.resetLetter > maxLength) {
-      if (stateRef.current.frame % 100 === 0) {
-        stateRef.current.wordIndex++;
-        if (stateRef.current.wordIndex >= words.length) {
-          stateRef.current.wordIndex = 0;
-        }
-        stateRef.current.currentLetter = 0;
-        stateRef.current.iteration = 0;
-        stateRef.current.resetLetter = 0;
-      }
+  };
+
+  const resetTimeline = () => {
+    stateRef.current.wordIndex++;
+    if (stateRef.current.wordIndex >= words.length) {
+      stateRef.current.wordIndex = 0;
     }
+    stateRef.current.currentLetter = 0;
+    stateRef.current.iteration = 0;
+    stateRef.current.resetLetter = 0;
+  };
+
+  const animate = () => {
+    timeline();
+    if (stateRef.current.resetLetter > maxLength) resetTimeline();
     stateRef.current.frame++;
     rafRef.current = requestAnimationFrame(animate);
   };
@@ -103,7 +107,7 @@ const useLetterGlicthInAndOutInfinit = (
   return { letters };
 };
 
-export default useLetterGlicthInAndOutInfinit;
+export default useLetterGlicthRandomInfinit;
 
 // const animate = useCallback(() => {
 //   if (stateRef.current.frame % perLetter === 0)

@@ -1,7 +1,7 @@
-import LettersGlitchedBasic from "../../../../components/letters/glitched/basic/LettersGlitchedBasic";
-import LettersGlitchedRandom from "../../../../components/letters/glitched/random/LettersGlitchedRandom";
-import LetterGlitchReveal from "../../../../components/letters/glitched/reveal/LetterGlitchReveal";
-import LetterGlitchInAndOut from "../../../../components/letters/glitched/inAndOut/LetterGlitchInAndOut";
+import LettersGlitchedBasic from "../../../../components/letters/glitched/onHover/basic/LettersGlitchedBasic";
+import LettersGlitchedRandom from "../../../../components/letters/glitched/onHover/random/LettersGlitchedRandom";
+import LetterGlitchReveal from "../../../../components/letters/glitched/onHover/reveal/LetterGlitchReveal";
+import LetterGlitchInAndOut from "../../../../components/letters/glitched/onHover/inAndOut/LetterGlitchInAndOut";
 
 const GlitchSection = () => {
   const tailwindCss =
