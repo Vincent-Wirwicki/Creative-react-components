@@ -6,7 +6,7 @@ import LettersReverseFour from "../../../../components/letters/reverse/4/Letters
 
 const ReverseSection = () => {
   const tailwindCss =
-    "inline-block xl:w-[40px] lg:w-[30px] xs:w-[20px] text-center";
+    "inline-block xl:w-[35px] lg:w-[30px] xs:w-[20px] text-center";
   const tailwindCss2 = "inline-block w-fit text-center";
 
   return (

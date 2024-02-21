@@ -30,7 +30,7 @@ const NoisyMesh = () => {
 
   return (
     <mesh ref={meshRef} position={[0, -2, 0]}>
-      <torusGeometry args={[10, 3, 16, 100]} />
+      <torusGeometry args={[10, 3, 16, 150]} />
       <shaderMaterial
         ref={shaderRef}
         uniforms={dataShader.uniforms}

@@ -46,13 +46,12 @@ const useLetterGlicthInAndOutInfinit = (
     i: number
   ) => {
     const currentWord = updateArray(i);
-    const random2 = specialChars[getRandomIndex()];
 
     const letters = currentWord.map((letter, i) => {
       const random = specialChars[getRandomIndex()];
       if (resetLetter > i && iteration > maxIteration) return random;
       if (currentLetter > i) return letter;
-      return random2;
+      return random;
     });
 
     setLetters(() => [...letters]);

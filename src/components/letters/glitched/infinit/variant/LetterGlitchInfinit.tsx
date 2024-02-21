@@ -1,7 +1,8 @@
+import useLongestWord from "../../utils/useLongestWord";
 import useLetterGlicthInfinit from "./useLetterGlicthInfinit";
 
 interface Props {
-  words:string[]
+  words: string[];
   className?: string;
   perLetter?: number;
   toNextLetter?: number;
@@ -13,20 +14,19 @@ const LetterGlitchInfinit: React.FC<Props> = ({
   words,
   className,
   perLetter = 10,
-  toNextLetter = 15,
+  toNextLetter = 5,
+  toNextIteration = 15,
+  maxIteration = 10,
 }) => {
+  const { letters } = useLetterGlicthInfinit(
+    words,
+    perLetter,
+    toNextLetter,
+    toNextIteration,
+    maxIteration
+  );
 
-  const { letters } = useLetterGlicthInfinit(words, perLetter, toNextLetter);
-
-  const longestWord = () => {
-    let longestWord = "";
-    words.forEach(word => {
-      if (word.length > longestWord.length) longestWord = word;
-    });
-    return longestWord.length;
-  };
-
-  const maxLength = longestWord();
+  const maxLength = useLongestWord(words);
   const displayText = Array(maxLength).fill("");
 
   return (

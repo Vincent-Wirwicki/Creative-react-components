@@ -10,24 +10,31 @@ export const noisyFragment = /* glsl */ `
 
     #define M_PI 3.14159265358979323846
 
+    float getColor (float t ){
+        return 0.5 + 0.5*cos( 6.28318*(1.*t+0.25) );
+    }
+
     void main() {
         vec3 pos = vPosition;
-
+        
         vec3 target = vTarget;
         float noise = vNoise;
+        float len = length(vNoise);
 
         float dist = length(pos.xy);
 
         float sx = smoothstep(-10., 10.,target.x );
         float sy = smoothstep(-10., 10.,target.y);
 
-        vec3 color = vec3(0.75, .25, .5);
+        vec3 color = vec3(0.25, .5, .25);
+        // color = vec3(0.);
+        float c = getColor(dist);
 
-        color.g *= noise * sx *5.;
-        color.r *= noise * sy *5. ;
-        // color.b = noise;
-
-        gl_FragColor = vec4(color  + noise *0.5 ,(noise + 0.5 ));
+        color.g *= noise * sx*2. +noise ;
+        color.b *= noise * sy*2. +noise ;
+        // color.r += noise *sx *4.;
+        
+        gl_FragColor = vec4(color ,1.-noise *2.);
 
     }
 

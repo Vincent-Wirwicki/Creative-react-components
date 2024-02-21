@@ -91,17 +91,21 @@ float cnoise(vec3 P){
         vec3 target = vec3(cos(angle + uTime*4.), sin(angle + uTime*4.),0.) * radius;
         vTarget = target;
         
-        float tx = smoothstep(-5.,5.,target.x);
-        float ty = smoothstep(-5.,5.,target.y);
+        float tx = smoothstep(-8.,8.,target.x);
+        float ty = smoothstep(-8.,8.,target.y);
     
         float noise = cnoise(vec3(pos + uTime*0.25));
         vNoise = noise;
         
+        float len = length(target.xy);
         float effect = noise * ty  *tx *3. ;
-
-        pos += .25 * (1. - noise * 3. * (tx - ty)) ;
-        pos.y +=  effect * cos(angle - radius)   ;
-        pos.x +=  effect * sin(angle - radius) ;
+        float displacement = sin(  uTime*5. + noise ) ;
+        
+        float lenN = length(noise);
+        pos += .25 * (1. - noise * 3. * (tx - ty)) + displacement;
+        pos.y +=  effect * cos(angle - radius) +  displacement;
+        pos.x +=  effect * sin(angle - radius) + displacement ;
+        pos.z *= displacement  ;
 
         gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1. );
     }

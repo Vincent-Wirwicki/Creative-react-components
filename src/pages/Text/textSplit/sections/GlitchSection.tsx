@@ -5,7 +5,7 @@ import LetterGlitchInAndOut from "../../../../components/letters/glitched/onHove
 
 const GlitchSection = () => {
   const tailwindCss =
-    "inline-block xl:w-[50px] lg:w-[40px] w-[40px] md:w-[30px] sm:[10px] ";
+    "inline-block xl:w-[40px] lg:w-[35px] w-[30px] md:w-[30px] sm:[10px] ";
 
   const tailwindCss2 = "tracking-widest w-full ";
 

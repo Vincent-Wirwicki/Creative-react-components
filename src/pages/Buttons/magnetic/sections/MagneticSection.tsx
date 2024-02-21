@@ -27,9 +27,15 @@ const MagneticSection = () => {
         <MagneticButtonRectVariantFour text="rect._4" />
       </div>
       <div className="bento-card magnetic-btn-bento-card-about">
-        <h3 className="">Magnetic button</h3>
         {/* <h3 className="">on hover</h3> */}
-        <LogoGithub fill="rgb(45 212 191)" />
+        <a
+          rel="external"
+          target="blank"
+          href="https://github.com/Vincent-Wirwicki/Creative-react-components/tree/main/src/components/buttons/magnetic"
+        >
+          <LogoGithub fill="rgb(45 212 191)" />
+        </a>
+        <h3 className="">Magnetic button </h3>
       </div>
       <div className="bento-card magnetic-btn-bento-card-wip">
         Work in progress

@@ -1,20 +1,17 @@
 // import React from 'react'
+// import { useMemo, useRef } from "react";
+
 import { lazy, Suspense } from "react";
 
 const WipComponent = lazy(
-  () =>
-    import(
-      "../../components/letters/glitched/infinit/inAndOutInfinit/LetterGlitchInAndOutInfinit"
-    )
+  () => import("../../shaders/raymarching/RaymarchingScene")
 );
 
 const WipPage = () => {
   return (
-    <div className="h-screen w-screen flex justify-center items-center">
+    <div className="h-screen w-screen">
       <Suspense fallback={null}>
-        <div className="text-4xl text-center uppercase ">
-          <WipComponent className="inline-block xl:w-[50px] lg:w-[40px] w-[40px] md:w-[30px] sm:[10px]" />
-        </div>
+        <WipComponent />
       </Suspense>
     </div>
   );
