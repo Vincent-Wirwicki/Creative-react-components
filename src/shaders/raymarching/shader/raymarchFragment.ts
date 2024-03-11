@@ -10,20 +10,35 @@ export const raymarchFragment = /* glsl */ `
     #define MAX_DIST 100.0
     #define SURF_DIST 0.01
     #define M_PI 3.14159265
-    
+
+    //--------------------------------------------------
+    // SDF SHAPES 
+    // MORE: https://iquilezles.org/articles/distfunctions/
+    //--------------------------------------------------   
     float sdSphere(vec3 p, float r){
         return length(p) - r;
     }
+    
     float sdBox( vec3 p, vec3 b ){
         vec3 q = abs(p) - b;
         return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
     }
+    //--------------------------------------------------
 
+
+    //--------------------------------------------------
+    // SMOOTH SDF INTERSECT
+    //--------------------------------------------------  
     float smoothmin(float a, float b, float k) {
         float h = clamp(0.5 + 0.5 * (b-a)/k, 0.0, 1.0);
         return mix(b, a, h) - k * h * (1.0 - h);
     }
+    //--------------------------------------------------
+  
 
+    //--------------------------------------------------
+    // VEC3 NOISE TO RANDOMIZE POSITION
+    //--------------------------------------------------  
     float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
     vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
     vec4 perm(vec4 x){return mod289(((x * 34.0) + 1.0) * x);}
@@ -49,33 +64,42 @@ export const raymarchFragment = /* glsl */ `
 
         return o4.y * d.y + o4.x * (1.0 - d.y);
     }
+    //--------------------------------------------------
 
+
+    //--------------------------------------------------
+    // RAYMARCH SCENE - RENDER LOGIC
+    //-------------------------------------------------- 
     float sdScene(vec3 pos){
         // float d = sdSphere(pos-vec3(0.0, 0.0, 1.0), 3.0);
         // float time = sin(time) + cos(uTime);
+        // float displacement = sin(5.0 * pos.x) * sin(5.0 * pos.y) * sin(5.0 * pos.z) * 1.5;
+
         float radius = 0.15;
-        float noisy = noise(pos.zyy  + uTime *0.5);
-        float noisy2 = noise(vec3(pos.yyx + uTime *0.25));
+        float noisy = noise(pos.zyy   + uTime *0.5);
+        float noisy2 = noise(vec3(pos.yyx + uTime *0.25)) ;
 
-        float sphere =  sdSphere(pos + vec3(1. -cos(noisy2 *1.75 ),1.- sin(noisy * 1.75), 0. ), radius);
+        float sphere =  sdSphere(pos + vec3(1. -cos(noisy2 *1.75 )  ,1.- sin(noisy * 1.75), 0. ), radius);
 
-        float sphere2 = sdSphere(pos + vec3(cos(noisy *2.25), sin(2.25 * noisy2), 0.), radius);
+        float sphere2 = sdSphere(pos + vec3(cos(noisy *2.25), sin(2.25 * noisy2), 0. ), radius);
 
-        float sphere3 = sdSphere(pos + vec3(cos(noisy2 * 2.),sin(noisy *2.), 0.),radius); 
+        float sphere3 = sdSphere(pos + vec3(cos(noisy2 * 2.), sin(noisy *2.) , 0.), radius); 
 
-        float sphere4 = sdSphere(pos + vec3(1.-cos(noisy *2.5),1.- sin(noisy2 *2.5), 0.), radius);
+        float sphere4 = sdSphere(pos + vec3(1.-cos(noisy *2.5 ),1.- sin(noisy2 *2.5), 0.), radius);
 
         float render1 = smoothmin(sphere, sphere2 , 0.8);
         float render2 = smoothmin(sphere3, sphere4, 0.8);
         float render3 = smoothmin(render1, render2, 0.8);
-
-        render1 += noisy * 0.5; 
-        render2 += noisy2 * 0.5;
-
+        
         return render3;
     }
+    //--------------------------------------------------
 
-    // RO = Ray Origin - RD = Ray Direction
+    //--------------------------------------------------
+    // CALC RAYMARCH INTERSECTION
+    // PARAM RO = RAY ORIGIN = CAMERA ORIGIN
+    // PARAM RD = RAY DIRECTION
+    //--------------------------------------------------  
     float raymarch(vec3 ro, vec3 rd){
         //dist from origin
         float dO = 0.;
@@ -84,19 +108,21 @@ export const raymarchFragment = /* glsl */ `
             
             //Ray position = Ray Origin + Ray Direction * Dist from origin
             vec3 p = ro + rd * dO;
-            
+            // dist in scene
             float dS = sdScene(p);
             
             dO += dS;
-
+            // if ray hit nothing || if ray is close enough to hit
             if(dO > MAX_DIST || dS < SURF_DIST) break;
         
         }
         return dO;
     }
+    //--------------------------------------------------
 
-
-
+    //--------------------------------------------------
+    // NORMALIZE POSITIONS
+    //--------------------------------------------------  
     vec3 getNormal(vec3 p) {
         vec2 e = vec2(.01, 0);
         vec3 n = sdScene(p) - vec3(
@@ -105,7 +131,11 @@ export const raymarchFragment = /* glsl */ `
             sdScene(p-e.yyx));
         return normalize(n);
     }
+    //--------------------------------------------------
 
+    //-------------------------------------------------- 
+    // CALC DIFFUSE LIGHT
+    //--------------------------------------------------  
     float addLights (vec3 p, vec3 lightPos){
         vec3 nLight = normalize(lightPos - p);
         vec3 nPos = getNormal(p);
@@ -113,61 +143,76 @@ export const raymarchFragment = /* glsl */ `
         return diffuseLight;
 
     }
+    //--------------------------------------------------  
 
-    float softshadow( in vec3 ro, in vec3 rd, float mint, float maxt, float w ) {
-        float res = 1.0;
-        float t = mint;
-        for( int i=0; i<256 && t<maxt; i++ )
-        {
-            float h = sdScene(ro + t*rd);
-            res = min( res, h/(w*t) );
-            t += clamp(h, 0.005, 0.50);
-            if( res<-1.0 || t>maxt ) break;
-        }
-        res = max(res,-1.0);
-        return 0.25*(1.0+res)*(1.0+res)*(2.0-res);
-    }
-
+    //--------------------------------------------------
+    // CALC COLOR PALETTE
+    //-------------------------------------------------- 
     vec3 palette( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d ){
         return a + b*cos( 6.28318*(c*t+d) );
     }
+    //--------------------------------------------------
 
+    //--------------------------------------------------
+    // RENDER
+    //-------------------------------------------------- 
     void main() {
-        // normalize plane cord
+        // normalize plane cord ------------------------
         vec2 newUv = (gl_FragCoord.xy/uResolution.xy);
         newUv -= 0.5;
         newUv.x *= uResolution.x / uResolution.y;
+        // ---------------------------------------------
 
-        // ray origin = camera position
+        // ray origin = camera position ----------------
         vec3 rayOrigin = vec3(-0.5,-1.,2.);
         vec3 rayDir = normalize(vec3(newUv,-.5));
+        // ---------------------------------------------
 
+        // calc dist / dir from the origin -------------
         float dist = raymarch(rayOrigin, rayDir);
         vec3 p = rayOrigin + rayDir * dist;
-
-        vec3 lightPosition = vec3(abs(cos(uTime*0.5)) + 10.,  abs(sin(uTime*0.5)) +10.,15.0);
-        // vec3 lightPosition = vec3(cos(uTime * .5 + 10.),sin(uTime * .5 + 5.),0.5);
-        // vec3 lightPosition = vec3(0.,15.,20.);
+        // ---------------------------------------------
+        
+        // light position-------------------------------
+        vec3 lightPos = vec3(abs(cos(uTime*0.5)) + 10.,  abs(sin(uTime*0.5)) +10.,15.0);
+        // ---------------------------------------------
 
 
         vec3 color = vec3(0., 0., 0.);
-
+        
+        //if ray hit-----------------------------------
         if(dist < MAX_DIST){ 
+            vec3 nPos = getNormal(p);
+            vec3 lightDir = normalize(lightPos - nPos);
+            float diffuse = max(dot(nPos, lightDir),0.);
+            color *=diffuse;
 
-            float diffuse = addLights(p, lightPosition);
-            float shadows = softshadow(rayOrigin, p, 0.1,5.,50.);
             float n = noise(p + sin(uTime) * cos(uTime));
-            float test = diffuse * shadows * n;
-            vec3 color1 = palette(n + shadows, vec3(1.,0.,0.), vec3(.0), vec3(.5), vec3(0.5, 0., 0.));
-            color = vec3(color1) *diffuse * shadows  ;
+            vec3 c = palette(n , vec3(1.,0.,0.), vec3(.0), vec3(.5), vec3(0.5, 0., 0.));
+            color = c *diffuse   ;
         };
+        // ---------------------------------------------
 
 
         gl_FragColor = vec4(color,1.);
 
     }
 `;
+// float radius = 0.15;
+// float noisy = noise(pos.zyy   + uTime *0.5);
+// float noisy2 = noise(vec3(pos.yyx + uTime *0.25)) ;
 
+// float sphere =  sdSphere(pos + vec3(1. -cos(noisy2 *1.75 )  ,1.- sin(noisy * 1.75), 0. ), radius);
+
+// float sphere2 = sdSphere(pos + vec3(cos(noisy *2.25), sin(2.25 * noisy2), 0. ), radius);
+
+// float sphere3 = sdSphere(pos + vec3(cos(noisy2 * 2.), sin(noisy *2.) , 0.), radius);
+
+// float sphere4 = sdSphere(pos + vec3(1.-cos(noisy *2.5 ),1.- sin(noisy2 *2.5), 0.), radius);
+
+// float render1 = smoothmin(sphere, sphere2 , 0.8);
+// float render2 = smoothmin(sphere3, sphere4, 0.8);
+// float render3 = smoothmin(render1, render2, 0.8);
 // float sphere =  sdSphere(pos + vec3(noisy *2., 0.,1.- noisy ), radius);
 
 // float sphere2 = sdSphere(pos + vec3(noisy, 0.15 * noisy, 0.), radius);

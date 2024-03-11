@@ -1,17 +1,21 @@
 // import React from 'react'
 // import { useMemo, useRef } from "react";
 
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 
-const WipComponent = lazy(
-  () => import("../../shaders/raymarching/RaymarchingScene")
-);
+// const WipComponent = lazy(lazy
+//   () => import("../../shaders/raymarching/fract/RaymarchingFractScene")
+// );
+
+// const WipComponent = lazy(
+//   () => import("../../shaders/raymarching/infinit/RaymarchingInfinitScene")
+// );
 
 const WipPage = () => {
   return (
     <div className="h-screen w-screen">
       <Suspense fallback={null}>
-        <WipComponent />
+        {/* <WipComponent /> */}
       </Suspense>
     </div>
   );
