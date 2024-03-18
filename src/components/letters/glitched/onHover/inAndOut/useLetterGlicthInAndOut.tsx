@@ -36,6 +36,8 @@ const useLetterGlicthInAndOut = (
   const stopAnimate = () => {
     setLetters(ogLetters);
     cancelAnimationFrame(rafRef.current);
+    rafRef.current = 0;
+    // console.log(rafRef.current);
   };
 
   const animate = () => {
@@ -46,7 +48,7 @@ const useLetterGlicthInAndOut = (
     if (frame % toNextLetter === 0 && iteration >= maxIteration) resetLetter++;
     frame++;
     rafRef.current = requestAnimationFrame(animate);
-    if (resetLetter > ogLetters.length) stopAnimate();
+    if (resetLetter > ogLetters.length) cancelAnimationFrame(rafRef.current);
   };
 
   return { animate, stopAnimate, letters };

@@ -1,6 +1,4 @@
 import useLetterGlicthRandomInfinit from "./useLetterGlicthRandomInfinit";
-// import { frame } from "framer-motion";
-import { useRef } from "react";
 
 interface Props {
   words: string[];
@@ -26,10 +24,9 @@ const LetterGlitchRandomInfinit: React.FC<Props> = ({
     toNextIteration,
     maxIteration
   );
-  const ref = useRef<HTMLDivElement>(null);
 
   return (
-    <div ref={ref}>
+    <div>
       {letters.map((letter, index) => (
         <span className={className} key={index}>
           {letter}

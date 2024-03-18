@@ -1,7 +1,8 @@
+import useLongestWord from "../../utils/useLongestWord";
 import useLetterGlicthInAndOutInfinit from "./useLetterGlicthInAndOutInfinit";
 
 interface Props {
-  words:string[]
+  words: string[];
   className?: string;
   perLetter?: number;
   toNextLetter?: number;
@@ -13,38 +14,34 @@ const LetterGlitchInAndOutInfinit: React.FC<Props> = ({
   words,
   className,
   perLetter = 15,
-  toNextLetter = 5,
+  toNextLetter = 10,
   toNextIteration = 10,
   maxIteration = 20,
 }) => {
+  const specialChars = [..."°²+'@*!&".split("")];
 
+  //animation
   const { letters } = useLetterGlicthInAndOutInfinit(
     words,
+    specialChars,
     perLetter,
     toNextLetter,
     toNextIteration,
     maxIteration
   );
 
-  const longestWord = () => {
-    let longestWord = "";
-    words.forEach(word => {
-      if (word.length > longestWord.length) longestWord = word;
-    });
-    return longestWord.length;
-  };
-
-  const maxLength = longestWord() + 1;
-  const displayText = Array(maxLength).fill("");
+  //number of span elements based on the longest word of the array
+  const maxSpan = useLongestWord(words) + 1;
+  const spanEl = Array(maxSpan).fill("");
 
   return (
-    <div>
-      {displayText.map((_, index) => (
+    <p>
+      {spanEl.map((_, index) => (
         <span className={className} key={index}>
           {letters[index]}
         </span>
       ))}
-    </div>
+    </p>
   );
 };
 

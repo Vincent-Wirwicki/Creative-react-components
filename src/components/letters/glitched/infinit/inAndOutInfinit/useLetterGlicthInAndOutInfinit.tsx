@@ -1,14 +1,15 @@
 import { useRef, useState, useEffect } from "react";
 import useLongestWord from "../../utils/useLongestWord";
-// useEffect, useMemo, useCallback
+
 const useLetterGlicthInAndOutInfinit = (
   words: string[],
+  specialChars: string[],
   perLetter = 15,
   toNextLetter = 20,
   toNextIteration = 25,
   maxIteration = 3
 ) => {
-  const [letters, setLetters] = useState([...words[0]]);
+  const [letters, setLetters] = useState<string[]>([...words[0]]);
 
   const rafRef = useRef(0);
   const stateRef = useRef({
@@ -20,7 +21,7 @@ const useLetterGlicthInAndOutInfinit = (
   });
 
   const maxLength = useLongestWord(words);
-  const specialChars = [..."°²+'@*!&".split("")];
+  // const specialChars = [..."°²+'@*!&".split("")];
 
   const getRandomIndex = () => {
     return Math.floor(Math.random() * specialChars.length);
@@ -46,7 +47,6 @@ const useLetterGlicthInAndOutInfinit = (
     i: number
   ) => {
     const currentWord = updateArray(i);
-
     const letters = currentWord.map((letter, i) => {
       const random = specialChars[getRandomIndex()];
       if (resetLetter > i && iteration > maxIteration) return random;
@@ -58,41 +58,40 @@ const useLetterGlicthInAndOutInfinit = (
   };
 
   const timeline = () => {
+    const state = stateRef.current;
     // update letter
-    if (stateRef.current.frame % perLetter === 0)
+    if (state.frame % perLetter === 0)
       updateLetters(
-        stateRef.current.currentLetter,
-        stateRef.current.iteration,
+        state.currentLetter,
+        state.iteration,
         maxIteration,
-        stateRef.current.resetLetter,
-        stateRef.current.wordIndex
+        state.resetLetter,
+        state.wordIndex
       );
     //frame to next letter
-    if (stateRef.current.frame % toNextLetter === 0) {
-      stateRef.current.currentLetter++;
+    if (state.frame % toNextLetter === 0) {
+      state.currentLetter++;
     }
     //frame to next iteration
-    if (stateRef.current.frame % toNextIteration === 0) {
-      stateRef.current.iteration++;
+    if (state.frame % toNextIteration === 0) {
+      state.iteration++;
     }
     // frame to reset
-    if (
-      stateRef.current.frame % toNextLetter === 0 &&
-      stateRef.current.iteration >= maxIteration
-    ) {
-      stateRef.current.resetLetter++;
+    if (state.frame % toNextLetter === 0 && state.iteration >= maxIteration) {
+      state.resetLetter++;
     }
   };
 
   const resetTimeline = () => {
-    if (stateRef.current.frame % 100 === 0) {
-      stateRef.current.wordIndex++;
-      if (stateRef.current.wordIndex >= words.length) {
-        stateRef.current.wordIndex = 0;
+    const state = stateRef.current;
+    if (state.frame % 100 === 0) {
+      state.wordIndex++;
+      if (state.wordIndex >= words.length) {
+        state.wordIndex = 0;
       }
-      stateRef.current.currentLetter = 0;
-      stateRef.current.iteration = 0;
-      stateRef.current.resetLetter = 0;
+      state.currentLetter = 0;
+      state.iteration = 0;
+      state.resetLetter = 0;
     }
   };
 
@@ -107,6 +106,7 @@ const useLetterGlicthInAndOutInfinit = (
     animate();
     return () => {
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
     };
   });
 
@@ -114,71 +114,3 @@ const useLetterGlicthInAndOutInfinit = (
 };
 
 export default useLetterGlicthInAndOutInfinit;
-
-// const animate = useCallback(() => {
-//   if (stateRef.current.frame % perLetter === 0)
-//     updateLetters(
-//       stateRef.current.currentLetter,
-//       stateRef.current.iteration,
-//       maxIteration,
-//       stateRef.current.wordIndex
-//     );
-//   if (stateRef.current.frame % toNextLetter === 0)
-//     stateRef.current.currentLetter++;
-//   if (stateRef.current.frame % toNextIteration === 0)
-//     stateRef.current.iteration++;
-//   if (
-//     stateRef.current.frame % toNextLetter === 0 &&
-//     stateRef.current.iteration >= maxIteration
-//   )
-//     stateRef.current.resetLetter++;
-//   if (stateRef.current.resetLetter > maxLength) {
-//     if (stateRef.current.frame % 90 === 0) {
-//       stateRef.current.wordIndex++;
-//       if (stateRef.current.wordIndex >= words.length)
-//         stateRef.current.wordIndex = 0;
-//       stateRef.current.currentLetter = 0;
-//       stateRef.current.iteration = 0;
-//       stateRef.current.resetLetter = 0;
-//     }
-//   }
-//   stateRef.current.frame++;
-//   rafRef.current = requestAnimationFrame(animate);
-// }, [
-//   maxIteration,
-//   maxLength,
-//   perLetter,
-//   toNextIteration,
-//   toNextLetter,
-//   updateLetters,
-//   words.length,
-// ]);
-
-// const animate = useCallback(() => {
-//   let { frame, currentLetter, resetLetter, iteration, wordIndex } =
-//     stateRef.current;
-//   if (frame % perLetter === 0)
-//     updateLetters(currentLetter, iteration, maxIteration, wordIndex);
-//   if (frame % toNextLetter === 0) currentLetter++;
-//   if (frame % toNextIteration === 0) iteration++;
-//   if (frame % toNextLetter === 0 && iteration >= maxIteration) resetLetter++;
-//   if (resetLetter > maxLength) {
-//     if (frame % 90 === 0) {
-//       stateRef.current.wordIndex++;
-//       if (wordIndex >= words.length) wordIndex = 0;
-//       currentLetter = 0;
-//       iteration = 0;
-//       resetLetter = 0;
-//     }
-//   }
-//   frame++;
-//   rafRef.current = requestAnimationFrame(animate);
-// }, [
-//   maxIteration,
-//   maxLength,
-//   perLetter,
-//   toNextIteration,
-//   toNextLetter,
-//   updateLetters,
-//   words.length,
-// ]);

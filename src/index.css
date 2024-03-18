@@ -20,6 +20,25 @@
       @apply appearance-none;
     }
 
+    /* width */
+    ::-webkit-scrollbar {
+      @apply hidden
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      @apply bg-neutral-500 overflow-hidden
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      @apply bg-pink-200 dark:bg-violet-600 rounded-xl
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-violet-700
+    }
 
   }
 
@@ -42,9 +61,13 @@
       @apply w-full md:h-full sm:h-fit p-2 border border-neutral-800
     }
 
+    .content-center {
+      @apply absolute top-0 left-1/2 translate-x-[-50%] w-1/2 h-full p-2 overflow-auto
+    }
+
     /* 
     --------------------
-    UTILS END 
+    UTILS END flex flex-col justify-center gap-5
     --------------------
     */
 
@@ -128,12 +151,12 @@
     */
     /* 
     ---------------------
-    TEXT SPLIT PAGE STYLE START
+    TEXT SPLIT PAGE STYLE START  p-5 pl-32
     ---------------------
     */
 
     .text-split-bento {
-      @apply lg:grid lg:gap-4 md:gap-2 p-5 pl-32 lg:grid-cols-8 lg:grid-rows-6 lg:w-2/3 lg:h-5/6 sm:w-5/6 sm:h-5/6 md:flex md:flex-col md:justify-center md:items-center
+      @apply lg:grid lg:gap-4 md:gap-2 lg:grid-cols-8 lg:grid-rows-6 lg:w-2/3 lg:h-5/6 sm:w-5/6 sm:h-5/6 md:flex md:flex-col md:justify-center md:items-center
     }
 
     .text-split-bento-card {

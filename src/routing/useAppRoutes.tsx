@@ -6,6 +6,7 @@ import useParticulesRoutes from "./particules/useParticulesRoutes";
 import useShadersRoutes from "./shaders/useShadersRoutes";
 import useTextRoutes from "./text/useTextRoutes";
 import useWipRoutes from "./wip/useWipRoutes";
+import useImageRoutes from "./images/useImageRoutes";
 
 const useAppRoutes = () => {
   const ButtonsRoutes = useButtonsRoutes();
@@ -15,6 +16,7 @@ const useAppRoutes = () => {
   const ParticulesRoutes = useParticulesRoutes();
   const ShaderRoutes = useShadersRoutes();
   const TextRoutes = useTextRoutes();
+  const ImagesRoutes = useImageRoutes();
   const WipRoutes = useWipRoutes();
 
   return (
@@ -27,6 +29,7 @@ const useAppRoutes = () => {
       {TextRoutes}
       {ParticulesRoutes}
       {WipRoutes}
+      {ImagesRoutes}
     </>
   );
 };

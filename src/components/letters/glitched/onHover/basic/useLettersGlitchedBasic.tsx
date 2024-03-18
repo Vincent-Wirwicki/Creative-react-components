@@ -30,6 +30,7 @@ const useLettersGlitchedBasic = (text: string, perLetter = 5) => {
   const stopAnimate = () => {
     setDisplayText(text);
     cancelAnimationFrame(rafRef.current);
+    rafRef.current = 0;
   };
 
   return { displayText, animate, stopAnimate };

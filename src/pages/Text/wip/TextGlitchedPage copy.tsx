@@ -27,7 +27,7 @@ const TextGlitchedPage = () => {
 
   return (
     <div className="section-center">
-      <div className="bento-grid text-2xl text-center uppercase  ">
+      <div className="content-center text-2xl text-center uppercase  ">
         <Suspense fallback={null}>
           <div className="bento-card col-start-2 col-span-6 row-start-1 row-span-2 flex justify-center items-center text-blue-600 font-bold text-4xl ">
             <LetterGlitchInAndOutInfinit

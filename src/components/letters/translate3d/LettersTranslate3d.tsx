@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 
 import styles from "./LettersTranslate3d.module.css";
 
@@ -37,7 +37,6 @@ const LettersTranslate3d: React.FC<Props> = ({
       ))}
     </div>
   );
-  useEffect(() => {}, []);
 
   return (
     <div className={wrap} ref={wrapRef}>
